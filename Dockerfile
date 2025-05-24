@@ -1,13 +1,11 @@
-FROM ubuntu:22.04
+FROM eclipse-temurin:21-jdk-alpine
+WORKDIR /server
 
-ENV DEBIAN_FRONTEND=noninteractive
+# Tải Purpur 1.21.4 mới nhất
+RUN wget -O purpur.jar https://api.purpurmc.org/v2/purpur/1.21.4/latest/download
 
-RUN apt-get update && apt-get install -y curl tzdata && \
-    ln -fs /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime && \
-    dpkg-reconfigure -f noninteractive tzdata && \
-    apt-get clean
+# Copy script start.sh
+COPY start.sh ./
+RUN chmod +x start.sh
 
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
-CMD ["/start.sh"]
+CMD ["./start.sh"]
